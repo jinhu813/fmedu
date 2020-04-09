@@ -1,0 +1,97 @@
+<#include "/common/layout.html">
+<@header>
+</@header>
+<@body>
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <small>系统管理 > 课程评分</small>
+    </h1>
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <!-- Your Page Content Here -->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+         <form action="/system/lesson/list/1"  class="form-inline">
+          <div class="box-header">
+              <div class="input-group">
+                  <a class="btn btn-primary" href="javascript:;" onClick="javascript :history.back(-1);" data-title="返回" data-width="800" data-height="400"><i class="fa fa-reply"></i> 返回</a>
+              </div>
+                 <div class="col-xs-2 input-group">
+                     <input type="text" name="lessonName" value="${lessonName!}" class="form-control" placeholder="标题">
+                 </div>
+                 <div class="col-xs-2 input-group">
+                     <select name="state" class="form-control select2" id="state">
+                         <option value="">--请选择状态--</option>
+                         <option  value="0" ${(state ==0)?string('selected="selected"',"")}>进行中</option>
+                         <option  value="1" ${(state ==1)?string('selected="selected"',"")}>已完成</option>
+                     </select>
+                 </div>
+             <div class="col-xs-2 input-group">
+                 <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                 <a href="/system/lesson/list/1" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+             </div>
+         </div>
+             <!-- /.box-header -->
+          </form>
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+              <tr>
+                <th  width="100px">行号</th>
+                <th>名称</th>
+                  <th><#if isTeacher>学生<#else>授课老师</#if></th>
+                <th>开始时间</th>
+                <th>状态</th>
+                <th>评分</th>
+                <th width="320px">操作</th>
+              </tr>
+              <#list pageData.getRecords() as lesson>
+              	  <tr>
+	                <td>${((pageData.current-1)*pageData.size +lesson_index+1)!}</td>
+	                <td>${(lesson.lessonName)!}</td>
+	                <td><#if isTeacher>${(lesson.stuName)!'--'}<#else>${(lesson.teachName)!'--'}</#if></td>
+	                <td>${(lesson.createdTime?string('yyyy/MM/dd HH:mm:ss'))!'--'}</td>
+	                <td><#if lesson.state == 0>进行中<#elseif lesson.state == 1 >已完成</#if></td>
+	                <td>${(lesson.score)!'未评分'}</td>
+	                <td>
+                        <#if lesson.score >
+                        <#else>
+                        <@shiro.hasPermission name="system:grade:mark">
+                        <#if lesson.state == 0>
+                        <a class="btn btn-primary btn-xs dialog" href="javascript:;" data-title="查看" disabled
+                           title="课程未结束不能评价"
+                           data-url="/system/grade/toMark/${(lesson.id)!}",data-width="800" data-height="400" >
+                            <i class="fa fa-pencil-square-o"></i> 评价</a>
+                        <#else>
+                        <a class="btn btn-primary btn-xs dialog" href="javascript:;" data-title="查看"
+                           data-url="/system/grade/toMark/${(lesson.id)!}",data-width="800" data-height="400" >
+                            <i class="fa fa-pencil-square-o"></i> 评价</a>
+                    </#if>
+                    </@shiro.hasPermission>
+                  </#if>
+	                </td>
+	              </tr>
+              </#list>
+            </table>
+          </div><!-- /.box-body -->
+          <div class="box-footer row">
+            <div class="col-md-6">
+         	  <#include "/common/paginateBar.html" />
+	  		  <@paginate pageData=pageData actionUrl="/system/lesson/list/" urlParas=""  />
+            </div>
+            <div class="col-md-6 pull-left">
+	             <#include "/common/paginate.html" />
+	  			 <@paginate currentPage=pageData.getCurrent() totalPage=pageData.getPages() actionUrl="/system/lesson/list/" urlParas="?pageSize=${pageSize!}"  />
+            </div>
+          </div>
+        </div><!-- /.box -->
+      </div>
+    </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+</@body>
+<@footer>
+</@footer>

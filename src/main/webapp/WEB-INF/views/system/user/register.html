@@ -1,0 +1,63 @@
+<#include "/common/layout_dl.html">
+<@header>
+</@header>
+<@body>
+<form class="form-horizontal layui-form layui-form-pane" method="post" action="/system/user/doRegister">
+    <div class="box-body">
+        <div class="form-group">
+            <label for="uname" class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-10">
+                <input type="text" id="uname" name="userName" class="form-control" placeholder="请输入用户名" lay-verify="required|username|check" check-url="/system/user/checkName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password"  class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" lay-verify="required|pass">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password2" class="col-sm-2 control-label">确认密码</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password2" name="password2" placeholder="请再次输入密码" lay-verify="required|pass|eqPwd">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone" class="col-sm-2 control-label">联系电话</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入联系号码" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="userDesc" rows="3" placeholder="个人详细信息，比如个人荣誉，这可以提高申请的成功率" ></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">角色</label>
+            <div class="col-sm-10">
+                <select name="roleId" id="campus" class="form-control select2" lay-ignore style="width: 100%;"
+                        lay-verify="required">
+                    <option value="">--请选择--</option>
+                <#list roleList as role>
+                <option name="roleId" value="${(role.id)}">
+                    ${(role.roleName)!}
+                </option>
+                &nbsp;
+                </#list>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-success" lay-submit lay-filter="submit"><i class="fa fa-save"></i>  提 交</button>
+        </div>
+    </div>
+    </div><!-- /.box-body -->
+</form>
+</@body>
+<@footer>
+</@footer>

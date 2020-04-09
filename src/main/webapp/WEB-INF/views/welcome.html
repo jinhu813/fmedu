@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap-fmedu.css">
+<link rel="stylesheet" href="/plugins/bootstrap/css/style.css">
+<head>
+    <title>在线师生家教互选系统</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="" />
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- //Meta tag Keywords -->
+
+    <!-- Custom-Files -->
+    <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.css">
+    <!-- Bootstrap-Core-CSS -->
+    <link rel="stylesheet" href="/plugins/bootstrap/css/style.css" type="text/css" media="all" />
+    <!-- Style-CSS -->
+    <link href="/plugins/bootstrap/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/app/css/AdminLTE.css">
+    <link rel="stylesheet" href="/plugins/iCheck/all.css">
+    <!-- Font-Awesome-Icons-CSS -->
+    <!-- //Custom-Files -->
+
+    <!-- Web-Fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=devanagari,latin-ext"
+          rel="stylesheet">
+    <!-- //Web-Fonts -->
+</head>
+
+<body>
+<!-- main banner -->
+<div class="main-top" id="home">
+    <!-- header -->
+    <header>
+        <div class="container-fluid">
+            <div class="header d-lg-flex justify-content-between align-items-center py-3 px-sm-3">
+                <!-- logo -->
+                <div id="logo">
+                    <h1><a href="index.html"><span class="fa fa-linode mr-2"></span>在线师生家教互选系统</a></h1>
+                </div>
+                <!-- //logo -->
+                <div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
+                    <!-- search -->
+                    <!-- //search -->
+                    <!-- nav -->
+                    <div class="nav_w3ls">
+                        <nav>
+                            <label for="drop" class="toggle">Menu</label>
+                            <input type="checkbox" id="drop" />
+                            <ul class="menu">
+                                <li><a href="index.html" class="active">首页</a></li>
+                                <li><a data-title="注册" class="dialog" href="javascript:;" data-url="/system/user/register" data-width="800" data-height="500">
+                                    注册
+                                </a></li>
+                                <li><a href="javascript:void(0)" onclick="login()">登陆</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- //nav -->
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- //header -->
+
+    <!-- banner -->
+    <div class="banner_w3lspvt position-relative">
+        <div class="container">
+            <div class="d-md-flex">
+                <div class="w3ls_banner_txt">
+                    <h3 class="w3ls_pvt-title">师生 <br><span>互选</span></h3>
+                    <p class="text-sty-banner">Sed ut perspiciatis unde omnis iste natus doloremque
+                        laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi.</p>
+                    <a href="javascript:void(0)" class="btn button-style mt-md-5 mt-4" onclick="login()">登陆</a>
+                </div>
+                <div class="banner-img">
+                    <img src="/images/banner.png" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <!-- animations effects -->
+        <div class="icon-effects-w3l">
+            <img src="/images/shape1.png" alt="" class="img-fluid shape-wthree shape-w3-one">
+            <img src="/images/shape2.png" alt="" class="img-fluid shape-wthree shape-w3-two">
+            <img src="/images/shape3.png" alt="" class="img-fluid shape-wthree shape-w3-three">
+            <img src="/images/shape5.png" alt="" class="img-fluid shape-wthree shape-w3-four">
+            <img src="/images/shape4.png" alt="" class="img-fluid shape-wthree shape-w3-five">
+            <img src="/images/shape6.png" alt="" class="img-fluid shape-wthree shape-w3-six">
+        </div>
+        <!-- //animations effects -->
+    </div>
+    <!-- //banner -->
+</div>
+<!-- //main banner -->
+
+<!-- what we do section -->
+<div class="what bg-li py-5" id="what">
+    <div class="container py-xl-5 py-lg-3">
+        <div class="row about-bottom-w3l text-center mt-4">
+            <#list pageData.getRecords() as info>
+                <div class="col-lg-4 about-grid" >
+                <div class="about-grid-main">
+                    <img src="/images/img1.png" alt="" class="img-fluid">
+                    <h4 class="my-4">
+                        <span style="width:120px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" title="${(info.title)!}">${(info.title)!}</span>
+                    </h4>
+                    <span style="height: 100px;display: -webkit-box;
+                        -webkit-box-orient: vertical;-webkit-line-clamp: 9;overflow: hidden;"> ${(info.content)!}</span>
+                    <a class="dialog button-w3ls btn mt-sm-5 mt-4" href="javascript:;"  data-title="详情" data-url="/welcome/infoDetail/${info.id}" data-width="800" data-height="600">
+                        详情</a>
+                </div>
+            </div>
+            </#list>
+        </div>
+    </div>
+</div>
+<!-- //what we do section -->
+
+
+<!-- stats -->
+<!-- //stats -->
+
+
+<!-- footer -->
+<footer class="bg-li py-5">
+    <div class="container py-xl-5 py-lg-3">
+        <!-- subscribe -->
+        <div class="subscribe mx-auto">
+
+            <div class="col-md-6">
+                <#include "/common/paginateBar.html" />
+                <@paginate pageData=pageData actionUrl="/welcome/" urlParas="?typeValue=11"/>
+            </div>
+            <div class="col-md-6 pull-left">
+                <#include "/common/paginate.html" />
+                <@paginate currentPage=pageData.getCurrent() totalPage=pageData.getPages() actionUrl="/welcome/" urlParas="?pageSize=${pageSize!}"  />
+            </div>
+        </div>
+        <!-- //subscribe -->
+    </div>
+</footer>
+<!-- //footer -->
+
+</body>
+<style>
+    .about-grid{
+        padding-top: 10px;
+    }
+    select.form-control:not([size]):not([multiple]) {
+         height: calc(2.85rem + 2px);
+    }
+</style>
+</html>
+<script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/app/js/app.js"></script>
+<script src="/app/js/demo.js"></script>
+<script src="/app/js/init.js"></script>
+<script src="/plugins/layui/layui.js" charset="utf-8"></script>
+<script src="/app/js/x-layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        var messages = [1, 2, 3]
+
+    });
+    function login(){
+        window.location.replace("/login")
+    }
+</script>
+<!-- //here ends scrolling icon -->
+<script type="text/javascript">
+    layui.config({
+        version:true,
+        debug:true,
+        base: '/app/js/modules/'
+    }).use('xform'); //加载入口
+
+</script>

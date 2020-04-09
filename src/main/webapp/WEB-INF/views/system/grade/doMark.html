@@ -1,0 +1,132 @@
+<#include "/common/layout_dl.html">
+<@header>
+</@header>
+<@body>
+<form role="form" class="form-horizontal layui-form layui-form-pane" method="post" action="/system/grade/domark">
+    <input type="hidden" name="lessonId" value="${(lesson.id)!}">
+    <div class="box-body">
+        <div class="form-group">
+            <label for="lessonName" class="col-sm-2 control-label">课程名称</label>
+            <div class="col-sm-10">
+                <input type="text" id="lessonName" name="lessonName" disabled value="${(lesson.lessonName)!}" class="form-control" placeholder="标题">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">课程类型</label>
+            <div class="col-sm-10">
+                <select name="lessonTypeId" id="campus" class="form-control select2" disabled lay-ignore style="width: 100%;"
+                        >
+                    <option value="">--请选择--</option>
+                    <#list dicts as dict>
+                    <option id="${(dict.value)!}" value="${(dict.value)!}"
+                            ${(lesson.lessonId==dict.value)?string('selected="selected"',"")}>${(dict.name)!}
+                    </option>
+                </#list>
+                </select>
+            </div>
+        </div>
+        <#if isStudent>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">教师名称</label>
+            <div class="col-sm-10">
+                <input type="text"  disabled value="${(lesson.teachName)!}" class="form-control" >
+            </div>
+        </div>
+    <#else>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">学生名称</label>
+            <div class="col-sm-10">
+                <input type="text"  disabled value="${(lesson.stuName)!}" class="form-control" >
+            </div>
+        </div>
+        </#if>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">分数</label>
+        <div class="col-sm-10">
+            <div class="start">
+                <ul class="startUl">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <h3 id="pingfen">暂无评价</h3>
+            <input type="hidden" id="score" name="score">
+        </div>
+    </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">评分详情</label>
+            <div class="col-sm-10">
+                <textarea    class="form-control" name="detail" rows="5"
+                             placeholder="请输入评分详情， ..."></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label   class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <a  class="btn btn-default" href="javascript:parent.layer.closeAll('iframe');"><i class="fa fa-close"></i>  取消</a>
+                    <button type="submit" class="btn btn-success" lay-submit lay-filter="submit"><i class="fa fa-save"></i>  提 交</button>
+            </div>
+        </div>
+</form>
+<style>
+    .start ul li{
+        width:50px;height:50px;
+        display: inline-block;
+        list-style: none;
+        background-image: url('/images/star2.svg');
+        background-size: 100% 100%;
+    }
+    .start ul .startBg {
+        background-image: url('/images/star.svg');
+    }
+</style>
+<script type="text/javascript">
+    var startUl=document.getElementsByClassName('startUl')[0];
+    var score = document.getElementById("score");
+    var arr=startUl.children;
+    var i;
+    for(var i=0;i<arr.length;i++){
+        arr[i].index=i;
+        arr[i].onmouseover=function(e){
+            // 清空
+            for(var i=0;i<arr.length;i++){
+                arr[i].className='';
+                pingfen.innerHTML='暂无评价'
+            }
+            var number=this.index+1;//星星高亮个数
+            //方法一
+            var pingArr=['20分','40分','60分','80分','评价满分'];
+            var scoreArr=['20','40','60','80','100'];
+            for (var i = 0; i < pingArr.length; i++) {
+                pingfen.innerHTML=pingArr[number-1];
+                score.value = scoreArr[number - 1];
+            }
+            //方法二
+            // if(number==5){
+            //   pingfen.innerHTML='评价满分'
+            // }else if (number==4) {
+            //   pingfen.innerHTML='评价80分'
+            // }
+            // else if (number==3) {
+            //   pingfen.innerHTML='评价60分'
+            // }
+            // else if (number==2) {
+            //   pingfen.innerHTML='评价40分'
+            // }
+            // else if (number==1) {
+            //   pingfen.innerHTML='评价20分'
+            // }
+            for(var i=0;i<=this.index;i++){
+                // this.setAttribute("class", "startBg");
+                arr[i].className='startBg';
+            }
+        }
+    }
+
+</script>
+</@body>
+<@footer>
+</@footer>

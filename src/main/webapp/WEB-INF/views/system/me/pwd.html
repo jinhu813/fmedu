@@ -1,0 +1,148 @@
+<#include "/common/layout.html">
+<@header>
+<link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
+</@header>
+<@body>
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <small>系统管理 > 用户中心</small>
+    </h1>
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <!-- Your Page Content Here -->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_2" data-toggle="tab">个人信息维护</a></li>
+            </ul>
+            <div class="tab-content">
+              	<div class="tab-pane active" id="tab_2">
+               	 <div class="row">
+					 <form class="form-horizontal layui-form layui-form-pane"  method="post" action="/system/me/updateUser">
+						 <div class="box-body">
+							 <div class="form-group">
+								 <label for="uname" class="col-sm-2 control-label">用户名</label>
+								 <input type="hidden" value="${sysUser.id}" name="id">
+								 <input type="hidden" value="${sysUser.userState}" name="userState">
+								 <div class="col-sm-10">
+									 <input type="text" id="uname" name="userName" value="${(sysUser.userName)!}" class="form-control" placeholder="请输入用户名" lay-verify="required|username">
+								 </div>
+							 </div>
+							 <div class="form-group">
+							 <label for="password"  class="col-sm-2 control-label">新密码</label>
+							 <div class="col-sm-10">
+							 <input type="text" class="form-control"  id="password" value="" name="password"  placeholder="密码为空则不修改密码" lay-verify="pass">
+							 </div>
+							 </div>
+							 <div class="form-group">
+							 <label for="confpassword"  class="col-sm-2 control-label">确认密码</label>
+							 <div class="col-sm-10">
+							 <input type="text" class="form-control"  id="confpassword"  name="confpwd" placeholder="请输入密码" lay-verify="pass|eqPwd">
+							 </div>
+							 </div>
+							 <div class="form-group">
+								 <label  class="col-sm-2 control-label">描述</label>
+								 <div class="col-sm-10">
+									 <textarea class="form-control" name="userDesc" rows="3" placeholder="请输入描述，最多300个字符 ..." >${(sysUser.userDesc)!}</textarea>
+								 </div>
+							 </div>
+							 <div class="form-group">
+								 <label  class="col-sm-2 control-label">联系电话</label>
+								 <div class="col-sm-10">
+									 <input class="form-control" name="phone" value="${(userDetail.phone)!}" ></input>
+								 </div>
+							 </div>
+							 <!--<div class="form-group">-->
+								 <!--<label  class="col-sm-2 control-label">状态</label>-->
+								 <!--<div class="col-sm-10">-->
+									 <!--<label>-->
+										 <!--<input name="userState" disabled type="radio" class="minimal" ${(sysUser.userState == 1)?string('checked','')} value="1" lay-ignore> 启用-->
+									 <!--</label>-->
+									 <!--<label>-->
+										 <!--<input name="userState" disabled type="radio" class="minimal" ${(sysUser.userState == -1)?string('checked','')}  value="-1" lay-ignore> 禁用-->
+									 <!--</label>-->
+								 <!--</div>-->
+							 <!--</div>-->
+							 <!--<div class="form-group">-->
+								 <!--<label  class="col-sm-2 control-label">角色</label>-->
+								 <!--<div class="col-sm-10">-->
+									 <!--<#list sysRoles as role>-->
+									 <!--<label title="${(role.roleDesc)!}">-->
+										 <!--<input type="checkbox" name="roleId" disabled class="minimal" value="${(role.id)!}" ${(myRolds?seq_contains('${role.id}')?string('checked',''))} lay-ignore>-->
+										 <!--${(role.roleName)!}-->
+									 <!--</label>-->
+									 <!--&nbsp;-->
+								 <!--</#list>-->
+							 <!--</div>-->
+						 </div>
+						 <input type="hidden" value="${(sysUser.userImg)!}" id="userImg" name="userImg">
+						 <div class="form-group">
+							 <label class="col-sm-2 control-label" for="systemLogo">头像</label>
+							 <div class="col-sm-10">
+							 <input name="file" type="file" class="file-loading" id="systemLogo">
+							 </div>
+						 </div>
+						 <div class="form-group">
+							 <label  class="col-sm-2 control-label"></label>
+							 <div class="col-sm-10">
+								 <button type="submit" class="btn btn-success" lay-submit lay-filter="submit"><i class="fa fa-save"></i>  提 交</button>
+							 </div>
+						 </div>
+				 </div><!-- /.box-body -->
+					</form>
+			        </div>
+	         	   </div>
+              	</div><!-- /.tab-pane -->
+              	
+              </div><!-- /.tab-pane -->
+            </div><!-- /.tab-content -->
+      </div>
+    </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+</@body>
+<@footer>
+<script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
+<script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+<script>
+	//初始化fileinput控件（第一次初始化）
+	function initFileInput(ctrlName, uploadUrl) {
+		var control = $('#' + ctrlName);
+
+		control.fileinput({
+
+			initialPreview: [
+				'${(sysUser.userImg)!}'
+			],
+			initialPreviewAsData: true,
+			initialPreviewConfig: [
+				{caption: "${(sysUser.userImg)!}", size: 930321, width: "120px", key: '${(sysUser.id)!}', showDelete: false}
+			],
+			deleteUrl: "/file/delete",
+
+			language: 'zh', //设置语言
+			uploadUrl: uploadUrl, //上传的地址
+			allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀
+			showUpload: false, //是否显示上传按钮
+			showCaption: false,//是否显示标题
+			browseClass: "btn btn-primary"
+		});
+	}
+
+	initFileInput("systemLogo", "/file/upload");
+
+	//上传成功回调函数
+	$('#systemLogo').on("fileuploaded", function(event, data, previewId, index) {
+		debugger;
+		var result = data.response;
+		console.log(result.status);
+		console.log(result.urls);
+		$('#userImg').val(result.urls[0]);
+	});
+
+</script>
+</@footer>

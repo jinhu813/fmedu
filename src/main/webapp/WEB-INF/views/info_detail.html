@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
+<!-- jquery-confirm -->
+<link rel="stylesheet" href="/plugins/jquery-confirm/jquery-confirm.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="/plugins/select2/select2.min.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker-bs3.css">
+<link rel="stylesheet" href="/plugins/iCheck/all.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/app/css/AdminLTE.css">
+<!--<link rel="stylesheet" href="/app/css/skins/skin-blue.css">-->
+<!--<link rel="stylesheet" href="/app/css/skins/skin-green.css">-->
+<link rel="stylesheet" href="/app/css/skins/skin-green-light.css">
+<body>
+<input type="hidden" id="score" value="${(userDetail.score)! '0'}">
+<div class="col-md-6">
+    <!-- Box Comment -->
+    <div class="box box-widget">
+        <div class="box-header with-border">
+            <div class="user-block">
+                <div>
+                    <div class="start" style="float: left;">
+                        <ul class="startUl">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div id="pingfen" style="float: left;margin-right: 20px">暂无评价</div>
+                </div>
+                <span class="username"><a href="#">${info.createdUserName}</a></span>
+                <span class="description">发布于 - ${(info.createdTime?string('yyyy/MM/dd HH:mm'))!'--'}</span>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- post text -->
+            <p>${info.content}</p>
+
+            <!-- Attachment -->
+        </div>
+        <!-- /.box-body -->
+        <!-- /.box-footer -->
+        <div class="box-footer">
+        </div>
+        <!-- /.box-footer -->
+    </div>
+    <input type="hidden" id="pagecontext" value="${pageContext.request.contextPath}">
+    <!-- /.box -->
+</div>
+</body>
+</html>
+<style>
+    .start ul li{
+        width:10px;height:10px;
+        display: inline-block;
+        list-style: none;
+        background-image: url('${basePath}/images/star2.svg');
+        background-size: 100% 100%;
+    }
+    .start ul .startBg {
+        background-image: url('${basePath}/images/star.svg');
+    }
+    .start ul .startBg2 {
+        background-image: url('${basePath}/images/halfstar.svg');
+    }
+</style>
+<script src="${basePath}/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var startUl=document.getElementsByClassName('startUl')[0];
+        var score = $("#score").val();
+        if(score > 0){
+            pingfen.innerHTML=score+"";
+        }
+        var arr=startUl.children;
+        //显示几颗星
+        var i = Math.floor(score /20);
+        var j = score /20;
+        for(var k=0;k<i;k++){
+            //显示满星
+            arr[k].className='startBg';
+        }
+        if(j - i >0){
+            arr[i].className='startBg2';
+        }
+        console.log($("#pagecontext").val())
+    })
+</script>

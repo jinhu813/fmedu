@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vacomall.mapper.GradeMapper">
+
+    <resultMap type="com.vacomall.entity.Grade" id="ApplyResult">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="type" column="type"/>
+        <result property="score" column="score"/>
+        <result property="detail" column="detail"/>
+        <result property="lessonId" column="lesson_id"/>
+        <result property="lessonName" column="lesson_name"/>
+        <result property="fromUid" column="from_uid"/>
+        <result property="toUid" column="to_uid"/>
+    </resultMap>
+    <resultMap type="com.vacomall.entity.vo.LessonVo" id="markResult">
+        <result property="id" column="id"/>
+        <result property="id"    column="ID"    />
+        <result property="infoId"    column="INFO_ID"    />
+        <result property="createdTime"    column="CREATED_TIME"    />
+        <result property="lessonName"    column="LESSON_NAME"    />
+        <result property="lessonId"    column="LESSON_ID"    />
+        <result property="teachId"    column="Teach_id"    />
+        <result property="teachName"    column="Teach_name"    />
+        <result property="stuId"    column="STU_ID"    />
+        <result property="stuName"    column="STU_NAME"    />
+        <result property="score" column="score"/>
+        <result property="detail" column="detail"/>
+    </resultMap>
+    <select id="MarkLesson" resultMap="markResult" parameterType="com.vacomall.entity.Lesson">
+        SELECT t1.*,t2.`score`,t2.`detail` FROM t_lesson t1 LEFT JOIN t_grade t2
+         ON t1.`ID`=t2.lesson_id
+        <if test="stuId != null and stuId != ''">
+           and t1.stu_id = t2.from_uid
+        </if>
+        <if test="teachId != null and teachId != ''">
+            and t1.Teach_id = t2.from_uid
+        </if>
+         <where>
+             <if test="stuId != null and stuId != ''">
+                 t1.stu_id = #{stuId}
+             </if>
+             <if test="teachId != null and teachId != ''">
+                 AND t1.Teach_id = #{teachId}
+             </if>
+             <if test="lessonName != null and lessonName != ''">
+                 AND t1.LESSON_NAME like #{lessonName}
+             </if>
+         </where>
+    </select>
+</mapper>

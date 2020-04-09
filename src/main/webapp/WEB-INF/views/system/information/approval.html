@@ -1,0 +1,67 @@
+<#include "/common/layout_dl.html">
+<@header>
+</@header>
+<@body>
+<form role="form" class="form-horizontal layui-form layui-form-pane" method="post" action="/system/information/doApproval">
+    <input type="hidden" name="id" value="${(info.id)!}">
+    <input type="hidden" name="createTime1" value="${(info.createTime?string('yyyy/MM/dd HH:mm:ss'))!}">
+    <div class="box-body">
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">标题</label>
+            <div class="col-sm-10">
+                <input type="text" id="title" name="title1" disabled value="${(info.title)!}" class="form-control" placeholder="标题">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">课程类型</label>
+            <div class="col-sm-10">
+                <select name="lessonTypeId1" id="campus" class="form-control select2" disabled lay-ignore style="width: 100%;"
+                        lay-verify="required">
+                    <option value="">--请选择--</option>
+                    <#list lessons as lesson>
+                    <option id="${(lesson.value)!}" value="${(lesson.value)!}"
+                            ${(info.lessonTypeId==lesson.value)?string('selected="selected"',"")}>${(lesson.name)!}
+                    </option>
+                </#list>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">详细信息</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="content1" rows="5" disabled
+                          placeholder="请输入描述， ...">${(info.content)!}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">审批意见</label>
+            <div class="col-sm-10">
+                <input type="text" id="denyReson" name="denyReson"  value="${(info.denyReson)!}" class="form-control" placeholder="审批意见">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">审批结果</label>
+            <div class="col-sm-10">
+                <select name="state" id="state" class="form-control select2"  lay-ignore style="width: 100%;"
+                        lay-verify="required">
+                    <option value="">--请选择--</option>
+                    <option  value="3"
+                            ${(info.state==3)?string('selected="selected"',"")}>未通过
+                    </option>
+                    <option  value="1"
+                             ${(info.state==2)?string('selected="selected"',"")}>通过
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label   class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-success" lay-submit lay-filter="submit"><i class="fa fa-save"></i> 提 交</button>
+                <a  class="btn btn-default" href="javascript:parent.layer.closeAll('iframe');"><i class="fa fa-close"></i>  取消</a>
+            </div>
+        </div>
+</form>
+</@body>
+<@footer>
+</@footer>

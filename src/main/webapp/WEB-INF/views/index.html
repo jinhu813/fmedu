@@ -1,0 +1,79 @@
+<#include "/common/layout.html">
+<@header>
+</@header>
+<@body>
+<link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.css">
+<!-- Bootstrap-Core-CSS -->
+<link rel="stylesheet" href="/plugins/bootstrap/css/style.css" type="text/css" media="all" />
+<!-- Style-CSS -->
+<link href="/plugins/bootstrap/css/font-awesome.min.css" rel="stylesheet">
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <small>首页</small>
+    </h1>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+      <div class="what bg-li py-5" id="what">
+          <div class="container py-xl-5 py-lg-3">
+              <div class="row about-bottom-w3l text-center mt-4">
+                  <#list pageData.getRecords() as info>
+                  <div class="col-lg-4 about-grid" style="margin-top: 10px">
+                      <div class="about-grid-main">
+                          <img src="/images/img1.png" alt="" class="img-fluid">
+                          <h4 class="my-4">
+                              <span style="width:120px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" title="${(info.title)!}">${(info.title)!}</span>
+                          </h4>
+                          <span style="height: 100px;display: -webkit-box;
+                        -webkit-box-orient: vertical;-webkit-line-clamp: 9;overflow: hidden;"> ${(info.content)!}</span>
+                          <a class="dialog button-w3ls btn mt-sm-5 mt-4" href="javascript:;"  data-title="详情" data-url="/welcome/infoDetail/${info.id}" data-width="800" data-height="600">
+                              详情</a>
+                          <#if authenticated == true && me.id != info.createdUserId && type != info.type && type != 3>
+                                <a  data-toggle="button-w3ls btn mt-sm-5 mt-4" title="申请" data-placement="bottom"
+                                    data-tiggle="ajax" class="button-w3ls btn mt-sm-5 mt-4"
+                                    data-submit-url="/system/apply/${info.id}"
+                                    data-confirm="您确定要申请该课程吗?">申请</a>
+                      </#if>
+                      </div>
+                  </div>
+              </#list>
+          </div>
+      </div>
+</div>
+  </section><!-- /.content -->
+<div class="box-footer row">
+    <div class="col-md-6">
+        <#include "/common/paginateBar.html" />
+        <@paginate pageData=pageData actionUrl="/index/" urlParas="?typeValue=11"/>
+    </div>
+    <div class="col-md-6 pull-left">
+        <#include "/common/paginate.html" />
+        <@paginate currentPage=pageData.getCurrent() totalPage=pageData.getPages() actionUrl="/index/" urlParas="?pageSize=${pageSize!}"  />
+    </div>
+</div>
+</div><!-- /.content-wrapper -->
+</@body>
+<@footer>
+ <script src="/plugins/chartjs/Chart.min.js"></script>
+  <script>
+ 	$(function(){
+
+
+ 	});
+ </script>
+<style>
+    .content-wrapper, .right-side {
+        min-height: 100%;
+         background-color: #FFFFFF !important;
+        z-index: 800;
+    }
+
+    .bg-li {
+        background: #FFF;
+    }
+
+</style>
+</@footer>

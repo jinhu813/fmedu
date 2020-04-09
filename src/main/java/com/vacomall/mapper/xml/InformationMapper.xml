@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vacomall.mapper.InformationMapper">
+
+    <resultMap type="com.vacomall.entity.Information" id="InformationResult">
+        <result property="createdUserId"    column="CREATED_USER_ID"    />
+        <result property="state"    column="STATE"    />
+        <result property="createdUserName"    column="CREATED_USER_NAME"    />
+        <result property="createdTime"    column="CREATED_TIME"    />
+        <result property="updatedTime"    column="UPDATED_TIME"    />
+        <result property="title"    column="TITLE"    />
+        <result property="id"    column="ID"    />
+        <result property="type"    column="TYPE"    />
+        <result property="lessonTypeId"    column="LESSON_TYPE_ID"    />
+        <result property="lessonTypeName"    column="LESSON_TYPE_NAME"    />
+        <result property="content"    column="CONTENT"    />
+    </resultMap>
+
+    <select id="getInfoApply" resultMap="InformationResult" parameterType="com.vacomall.entity.Information">
+        SELECT * FROM t_information t1 WHERE t1.id NOT IN
+        (SELECT info_id FROM T_APPLY
+         <where>
+             state !='3'
+             <if test="createdUserId != null and createdUserId != ''">
+                AND apply_user_id=#{createdUserId}
+             </if>
+         </where>
+         )
+        AND t1.state = #{state}
+        and state !='2'
+        order by t1.CREATED_TIME desc
+    </select>
+</mapper>

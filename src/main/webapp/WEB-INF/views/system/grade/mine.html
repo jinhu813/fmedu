@@ -1,0 +1,55 @@
+<#include "/common/layout.html">
+<@header>
+</@header>
+<@body>
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      <small>系统管理 > 我的评分</small>
+    </h1>
+  </section>
+  <!-- Main content -->
+  <section class="content">
+    <!-- Your Page Content Here -->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box">
+          <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+              <tr>
+                <th>课程名称</th>
+                  <th><#if teacher>学生<#else>授课老师</#if></th>
+                <th>评价时间</th>
+                <th>评分</th>
+                <th>评论</th>
+              </tr>
+              <#list pageData.getRecords() as grade>
+              	  <tr>
+	                <td>${(grade.lessonName)!}</td>
+	                <td>${(grade.fromUname)!'--'}</td>
+	                <td>${(grade.createTime?string('yyyy/MM/dd HH:mm:ss'))!'--'}</td>
+	                <td>${(grade.score)!'未评分'}</td>
+	                <td title="${(grade.detail)!'--'}">${(grade.detail)!'--'}</td>
+	              </tr>
+              </#list>
+            </table>
+          </div><!-- /.box-body -->
+          <div class="box-footer row">
+            <div class="col-md-6">
+         	  <#include "/common/paginateBar.html" />
+	  		  <@paginate pageData=pageData actionUrl="/system/lesson/list/" urlParas=""  />
+            </div>
+            <div class="col-md-6 pull-left">
+	             <#include "/common/paginate.html" />
+	  			 <@paginate currentPage=pageData.getCurrent() totalPage=pageData.getPages() actionUrl="/system/lesson/list/" urlParas="?pageSize=${pageSize!}"  />
+            </div>
+          </div>
+        </div><!-- /.box -->
+      </div>
+    </div>
+  </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+</@body>
+<@footer>
+</@footer>
