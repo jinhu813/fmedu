@@ -39,12 +39,29 @@ public class AddressController extends SuperController {
      * @param provinceCode
      * @return
      */
-    @GetMapping("/city/provinceCode")
+    @GetMapping("/city/provinceCode/{provinceCode}")
     @ResponseBody
     public Rest getCity(@PathVariable String provinceCode){
         List<Map<String, String>> listMap = new ArrayList<Map<String,String>>();
         if(StringUtils.isNotEmpty(provinceCode)){
             List<Dict> dicts = dictService.findByTypeCode(provinceCode);
+            dictCovert(listMap, dicts);
+            return Rest.okData(listMap);
+        }
+        return Rest.okData(listMap);
+    }
+
+    /**
+     * 根据省份的code获取下面的市
+     * @param cityCode
+     * @return
+     */
+    @GetMapping("/city/area/{cityCode}")
+    @ResponseBody
+    public Rest getArea(@PathVariable String cityCode){
+        List<Map<String, String>> listMap = new ArrayList<Map<String,String>>();
+        if(StringUtils.isNotEmpty(cityCode)){
+            List<Dict> dicts = dictService.findByTypeCode(cityCode);
             dictCovert(listMap, dicts);
             return Rest.okData(listMap);
         }
