@@ -75,12 +75,12 @@ public class UserController extends SuperController{
     @RequiresPermissions("addUser")
     @RequestMapping("/doAdd")  
     @ResponseBody
-    public  Rest doAdd(SysUser user,@RequestParam(value="roleId[]",required=false) String[] roleId){
-    	
-    	sysUserService.insertUser(user,roleId);
-    	return Rest.ok();
-    }  
-    /**
+	public  Rest doAdd(SysUser user,@RequestParam(value="roleId",required=false) String roleId){
+		String[] roleIds = {roleId};
+		sysUserService.insertUser(user,roleIds);
+		return Rest.ok();
+	}
+	/**
      * 删除用户
      */
     @Log("删除用户")
@@ -118,12 +118,13 @@ public class UserController extends SuperController{
     @Log("编辑用户")
     @RequestMapping("/doEdit")
     @ResponseBody
-    public  Rest doEdit(SysUser sysUser,@RequestParam(value="roleId[]",required=false) String[] roleId,Model model){
-    	sysUserService.updateUser(sysUser,roleId);
-    	return Rest.ok();
-    } 
-    
-    /**
+	public  Rest doEdit(SysUser sysUser,@RequestParam(value="roleId",required=false) String roleId,Model model){
+		String[] roleIds = {roleId};
+		sysUserService.updateUser(sysUser,roleIds);
+		return Rest.ok();
+	}
+
+	/**
      * 验证用户名是否已存在
      */
     @RequestMapping("/checkName")  
