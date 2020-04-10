@@ -29,6 +29,51 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">所在省份</label>
+            <div class="col-sm-10">
+                <select name="province" id="province" class="form-control select2" lay-ignore style="width: 100%;"
+                        lay-verify="required">
+                    <option value="">--请选择--</option>
+                    <#list provinces as p>
+                    <option name="province" id="${(p.value)}" value="${(p.value)}">
+                        ${(p.name)!}
+                    </option>
+                    &nbsp;
+                </#list>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">所在市</label>
+            <div class="col-sm-10">
+                <select name="city" id="city" class="form-control select2" lay-ignore style="width: 100%;"
+                        lay-verify="required">
+                    <option value="" selected="selected">--请选择--</option>
+                    <#list cities as c>
+                    <option name="city" id="${(c.value)}" value="${(c.id)}">
+                        ${(c.name)!}
+                    </option>
+                    &nbsp;
+                </#list>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">所在区县</label>
+            <div class="col-sm-10">
+                <select name="area" id="area" class="form-control select2" lay-ignore style="width: 100%;"
+                        lay-verify="required">
+                    <option value="">--请选择--</option>
+                    <#list areas as a>
+                    <option name=""  value="${(a.id)}">
+                        ${(a.name)!}
+                    </option>
+                    &nbsp;
+                </#list>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">描述</label>
             <div class="col-sm-10">
                 <textarea class="form-control" name="userDesc" rows="3" placeholder="个人详细信息，比如个人荣誉，这可以提高申请的成功率" ></textarea>
@@ -61,3 +106,32 @@
 </@body>
 <@footer>
 </@footer>
+<script>
+    $("#province").on('change',function(){
+        $("#city").empty();
+        var pid = $(this).find("option:selected").attr("id");
+        if(pid) {
+            $.get('/address/city/provinceCode/'+pid, function (response) {
+                if (response.code == 200) {
+                    debugger;
+                    $("#city").select2({
+                        data: response.data
+                    });
+                }
+            });
+        }
+    });
+    $("#city").on('change',function(){
+        $("#area").empty();
+        var pid = $(this).find("option:selected").val();
+        if(pid) {
+            $.get('/address/city/area/'+pid, function (response) {
+                if (response.code == 200) {
+                    $("#area").select2({
+                        data: response.data
+                    });
+                }
+            });
+        }
+    });
+</script>

@@ -1,9 +1,15 @@
 package com.vacomall.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.vacomall.entity.Dict;
+import com.vacomall.service.DictService;
+import com.vacomall.service.DictTypeService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +22,7 @@ import com.vacomall.entity.SysUserRole;
 import com.vacomall.mapper.SysUserMapper;
 import com.vacomall.mapper.SysUserRoleMapper;
 import com.vacomall.service.ISysUserService;
+import org.springframework.util.CollectionUtils;
 
 /**
  *
@@ -28,12 +35,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	@Autowired private SysUserMapper userMapper;
 	
 	@Autowired private SysUserRoleMapper userRoleMapper;
+	@Autowired
+	private DictService dictService;
+	@Autowired
+	private DictTypeService dictTypeService;
 	
 	@Override
 	public void insertUser(SysUser user, String[] roleIds) {
 		// TODO Auto-generated method stub
 		user.setCreateTime(new Date());
     	user.setPassword(ShiroUtil.md51024Pwd(user.getPassword(), user.getUserName()));
+		initUserAddress(user);
 		//保存用户
     	userMapper.insert(user);
 		//绑定角色
@@ -46,6 +58,41 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 			}
 		}
 		
+	}
+
+	private void initUserAddress(SysUser user) {
+		if(StringUtils.isNotEmpty(user.getProvince())){
+			List<Dict> dicts = dictService.selectList("provinces", user.getProvince());
+			StringBuilder sb = new StringBuilder();
+			if(!CollectionUtils.isEmpty(dicts)){
+				Optional<Dict> first = dicts.stream().findFirst();
+				if(first.isPresent()){
+					Dict dict = first.get();
+					sb.append(dict.getName());
+					if(StringUtils.isNotEmpty(user.getCity())){
+						List<Dict> cityDict = dictService.selectList(dict.getValue(), user.getCity());
+						if(!CollectionUtils.isEmpty(cityDict)){
+							Optional<Dict> dict1 = cityDict.stream().findFirst();
+							if(dict1.isPresent()){
+								Dict city = dict1.get();
+								sb.append(city.getName());
+								if(StringUtils.isNotEmpty(user.getArea())){
+									List<Dict> areaDict = dictService.selectList(city.getValue(), user.getArea());
+									if(!CollectionUtils.isEmpty(areaDict)){
+										Optional<Dict> areaFirst = areaDict.stream().findFirst();
+										if(areaFirst.isPresent()){
+											Dict area = areaFirst.get();
+											sb.append(area.getName());
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			user.setAddress(sb.toString());
+		}
 	}
 
 	@Override
@@ -71,6 +118,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	public Page<Map<Object, Object>> selectUserPage(Page<Map<Object, Object>> page, String search) {
 		// TODO Auto-generated method stub
 		page.setRecords(baseMapper.selectUserList(page, search));
+		return page;
+	}
+
+	@Override
+	public Page<Map<Object, Object>> selectUserPage(Page<Map<Object, Object>> page, SysUser sysUser) {
+		page.setRecords(baseMapper.selectUserList2(page,sysUser));
 		return page;
 	}
 

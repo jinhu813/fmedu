@@ -24,4 +24,23 @@
 		ORDER BY u.`createTime` DESC
 	</select>
 
+	<select id="selectUserList2" resultType="java.util.HashMap" parameterType="com.vacomall.entity.SysUser">
+
+		SELECT u.* FROM `sys_user` u
+		join sys_user_role t2 ON u.id = t2.userId AND t2.roleId='17c51b338fab469ba77998d3b9ffe759' WHERE 1=1
+		<if test="userName != null">
+			AND u.userName LIKE CONCAT('%',#{userName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="province != null">
+			AND u.province LIKE CONCAT('%',#{province,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="city != null">
+			AND u.city LIKE CONCAT('%',#{city,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="area != null">
+			AND u.area LIKE CONCAT('%',#{area,jdbcType=VARCHAR},'%')
+		</if>
+		ORDER BY u.`createTime` DESC
+	</select>
+
 </mapper>

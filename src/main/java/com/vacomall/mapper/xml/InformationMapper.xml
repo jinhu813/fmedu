@@ -17,7 +17,7 @@
     </resultMap>
 
     <select id="getInfoApply" resultMap="InformationResult" parameterType="com.vacomall.entity.Information">
-        SELECT * FROM t_information t1 WHERE t1.id NOT IN
+        select t2.* from (SELECT * FROM t_information t1 WHERE t1.id NOT IN
         (SELECT info_id FROM T_APPLY
          <where>
              state !='3'
@@ -28,6 +28,18 @@
          )
         AND t1.state = #{state}
         and state !='2'
-        order by t1.CREATED_TIME desc
+        order by t1.CREATED_TIME desc)t2 JOIN sys_user t3 ON  t2.CREATED_USER_ID=t3.id
+        <where>
+            <if test="province != null and province !='' ">
+                AND t3.province = #{province}
+            </if>
+            <if test="city != null and city !='' ">
+                AND t3.city = #{city}
+            </if>
+            <if test="area != null and area !='' ">
+                AND t3.area = #{area}
+            </if>
+        </where>
+
     </select>
 </mapper>

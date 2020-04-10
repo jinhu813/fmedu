@@ -44,11 +44,11 @@
                         <#if !mine && record.state == 0>
                       <a class="btn btn-success btn-xs"
                          data-tiggle="ajax"
-                         data-submit-url="/system/reserved/del?id=${(record.id)!}"
+                         data-submit-url="/system/reserved/del?id=${(record.id)!}&state=1"
                          data-confirm="您确定通过吗？"><i class="fa fa-times"></i> 通过</a>
                       <a class="btn btn-danger btn-xs"
                          data-tiggle="ajax"
-                         data-submit-url="/system/reserved/del?id=${(record.id)!}"
+                         data-submit-url="/system/reserved/del?id=${(record.id)!}&state=2"
                          data-confirm="您确定不通过吗？"><i class="fa fa-times"></i> 不通过</a>
                     </#if>
 	                </td>

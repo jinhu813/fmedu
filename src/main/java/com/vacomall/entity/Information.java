@@ -65,6 +65,13 @@ public class Information {
     @TableField("DENY_RESON")
     private String denyReson;
 
+    @TableField(exist = false)
+    private String province;
+    @TableField(exist = false)
+    private String city;
+    @TableField(exist = false)
+    private String area;
+
     public String getDenyReson() {
         return denyReson;
     }
@@ -171,6 +178,30 @@ public class Information {
     public String getContent()
     {
         return content;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     @Override

@@ -2,12 +2,15 @@ package com.vacomall.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.vacomall.common.controller.SuperController;
+import com.vacomall.entity.Dict;
 import com.vacomall.entity.Information;
 import com.vacomall.entity.SysUser;
 import com.vacomall.entity.UserDetail;
+import com.vacomall.service.DictService;
 import com.vacomall.service.ISysUserService;
 import com.vacomall.service.InformationService;
 import com.vacomall.service.UserDetailService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 首页控制器
@@ -31,10 +37,13 @@ public class IndexController extends SuperController {
 	@Autowired
 	private ISysUserService userService;
 	@Autowired
+    private DictService dictService;
+	@Autowired
 	private UserDetailService userDetailService;
     @RequestMapping({"index/{pageNo}","index"})
     public  String index(Model model,@PathVariable(name = "pageNo",required = false) Integer pageNo,
-                         @RequestParam(defaultValue = "10") Integer pageSize){
+                         @RequestParam(defaultValue = "10") Integer pageSize,String province,String city,String area){
+        //系统登陆后的首页
         getInfos(pageNo, pageSize, model);
         //判断用户是否已经登陆
         boolean authenticated = SecurityUtils.getSubject().isAuthenticated();
@@ -54,6 +63,7 @@ public class IndexController extends SuperController {
     @RequestMapping({"/{pageNo}","/","welcome/{pageNo}"})
     public String welcome(@PathVariable(name = "pageNo",required = false) Integer pageNo,
                           @RequestParam(defaultValue = "50") Integer pageSize,Model model){
+        //系统首页
         if(null == pageNo){
             pageNo = 1;
         }
@@ -82,6 +92,42 @@ public class IndexController extends SuperController {
             information.setCreatedUserId(user.getId());
         }
 
+        Page<Information> informationPage = informationService.getInfoApplyPage(page, information);
+        model.addAttribute("pageData", informationPage);
+    }
+    private void getInfos(Integer pageNo, Integer pageSize, Model model,String province,String city,String area) {
+        SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        if(null == pageNo){
+            pageNo = 1;
+        }
+        Page<Information> page = this.getPage(pageNo, pageSize);
+        Information information = new Information();
+        information.setState(1L);
+        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        if(null != user){
+            information.setCreatedUserId(user.getId());
+        }
+        province = Optional.ofNullable(province).orElse(sysUser.getProvince());
+        if(StringUtils.isNotEmpty(province)){
+            model.addAttribute("province",province);
+            List<Dict> cities = dictService.findByTypeCode(province);
+            model.addAttribute("cities",cities);
+        }
+        information.setProvince(province);
+        city = Optional.ofNullable(city).orElse(sysUser.getCity());
+        if(StringUtils.isNotEmpty(city)){
+            model.addAttribute("city",city);
+            List<Dict> areas = dictService.findByTypeCode(city);
+            model.addAttribute("areas",areas);
+        }
+        information.setCity(city);
+        area = Optional.ofNullable(area).orElse(sysUser.getArea());
+        if(StringUtils.isNotEmpty(area)){
+            model.addAttribute("area",area);
+        }
+        information.setArea(area);
+        List<Dict> provinces = dictService.findByTypeCode("provinces");
+        model.addAttribute("provinces",provinces);
         Page<Information> informationPage = informationService.getInfoApplyPage(page, information);
         model.addAttribute("pageData", informationPage);
     }

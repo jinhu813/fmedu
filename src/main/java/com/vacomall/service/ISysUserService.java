@@ -17,7 +17,8 @@ public interface ISysUserService extends IService<SysUser> {
 	 * 分页查询用户
 	 */
 	Page<Map<Object, Object>> selectUserPage(Page<Map<Object, Object>> page, String search);
-	
+	Page<Map<Object, Object>> selectUserPage(Page<Map<Object, Object>> page, SysUser sysUser);
+
 	/**
 	 * 保存用户
 	 */

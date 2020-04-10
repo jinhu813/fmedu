@@ -21,112 +21,150 @@ import com.baomidou.mybatisplus.enums.IdType;
 public class SysUser extends Model<SysUser> {
 
     private static final long serialVersionUID = 1L;
-    
+
     public static final int _0 = 0;
-	public static final int _1 = 1;
-    
+    public static final int _1 = 1;
+
     /**
      * 主键
      */
-    @TableId(type=IdType.UUID)
-	private String id;
+    @TableId(type = IdType.UUID)
+    private String id;
     /**
      * 用户名
      */
-	private String userName;
+    private String userName;
     /**
      * 密码
      */
-	private String password;
+    private String password;
     /**
      * 用户状态,1-启用,-1禁用
      */
-	private Integer userState;
+    private Integer userState;
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
     /**
      * 描述
      */
-	private String userDesc;
+    private String userDesc;
     /**
      * 头像
      */
-	private String userImg;
+    private String userImg;
     /**
      * 部门主键
      */
-	private String deptId;
+    private String deptId;
 
+    private String province;
 
-	public String getId() {
-		return id;
-	}
+    private String city;
+    private String area;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private String address;
 
-	public String getUserName() {
-		return userName;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public Integer getUserState() {
-		return userState;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setUserState(Integer userState) {
-		this.userState = userState;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public Date getCreateTime() {
-		return createTime;
-	}
+    public Integer getUserState() {
+        return userState;
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public void setUserState(Integer userState) {
+        this.userState = userState;
+    }
 
-	public String getUserDesc() {
-		return userDesc;
-	}
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setUserDesc(String userDesc) {
-		this.userDesc = userDesc;
-	}
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-	public String getUserImg() {
-		return userImg;
-	}
+    public String getUserDesc() {
+        return userDesc;
+    }
 
-	public void setUserImg(String userImg) {
-		this.userImg = userImg;
-	}
+    public void setUserDesc(String userDesc) {
+        this.userDesc = userDesc;
+    }
 
-	public String getDeptId() {
-		return deptId;
-	}
+    public String getUserImg() {
+        return userImg;
+    }
 
-	public void setDeptId(String deptId) {
-		this.deptId = deptId;
-	}
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
+    }
 
-	@Override
-	protected Serializable pkVal() {
-		return this.id;
-	}
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
 
 }

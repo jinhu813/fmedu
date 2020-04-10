@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @program: fmedu
@@ -95,6 +96,9 @@ public class ReservedController extends SuperController {
         if(lesson == null){
             return Rest.failure("预约失败，课程信息不存在");
         }
+        if(lesson.getState().equals(1)){
+            return Rest.failure("预约失败，课程已完结");
+        }
         reserved.setCreatedTime(new Date());
         reserved.setLessonName(lesson.getLessonName());
         reserved.setState(0);
@@ -119,7 +123,9 @@ public class ReservedController extends SuperController {
      */
     @RequestMapping("/del")
     @ResponseBody
-    public Rest deal(String id){
+    public Rest deal(String id,Integer state){
+        //如果不传state就是审核不通过
+        state = Optional.ofNullable(state).orElse(2);
         //获取当前用户
         SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
         //获取当前用户的id
@@ -132,6 +138,7 @@ public class ReservedController extends SuperController {
 
         Wrapper wrapper = new EntityWrapper<Reserved>();
         wrapper.eq("for_id",userId);
+        wrapper.or().eq("CREATED_id",userId);
         wrapper.and().between("end_time", reserved.getBegin(), reserved.getEnd());
         wrapper.and().eq("state",1);
         int i = reservedService.selectCount(wrapper);
@@ -140,9 +147,9 @@ public class ReservedController extends SuperController {
             reservedService.updateById(reserved);
             return Rest.failure("预约时间段已被预约，系统自动设置未通过");
         }else{
-            reserved.setState(1);
+            reserved.setState(state);
             reservedService.updateById(reserved);
-            return Rest.ok("审核通过");
+            return Rest.ok("审核成功");
         }
     }
 

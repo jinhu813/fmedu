@@ -65,6 +65,8 @@ public class UserController extends SuperController{
     public  String add(Model model){
     	model.addAttribute("roleList", sysRoleService.selectList(null));
     	model.addAttribute("deptList", sysDeptService.selectList(null));
+		List<Dict> provinces = dictService.findByTypeCode("provinces");
+		model.addAttribute("provinces",provinces);
 		return "system/user/add";
     } 
     
@@ -137,6 +139,10 @@ public class UserController extends SuperController{
     	return Rest.ok();
     }
 
+    @Autowired
+	private DictTypeService dictTypeService;
+    @Autowired
+	private DictService dictService;
 	/***
 	 * 跳转到注册页面
 	 * @return
@@ -149,6 +155,8 @@ public class UserController extends SuperController{
 		wrapper.or().eq("roleName","TEACHER");
 		List<SysRole> sysRoles = sysRoleService.selectList(wrapper);
 		model.addAttribute("roleList",sysRoles);
+		List<Dict> provinces = dictService.findByTypeCode("provinces");
+		model.addAttribute("provinces",provinces);
 		return "system/user/register";
 	}
 
@@ -161,25 +169,12 @@ public class UserController extends SuperController{
 	@RequestMapping("/doRegister")
 	@ResponseBody
 	public Rest doRegister(SysUser user, UserDetail userDetail,@RequestParam(name = "roleId",required = false) String[] roleId){
-		String userId = UUID.randomUUID().toString();
-		user.setId(userId);
 		user.setUserState(0);
 		sysUserService.insertUser(user,roleId);
 
-		userDetail.setId(userId);
-		userDetailService.insert(userDetail);
 
-		//创建一条申请
-		Apply apply = new Apply();
-		apply.setInfoTitle(user.getUserName()+"注册申请");
-		apply.setId(userId);
-		apply.setApplyTime(new Date());
-		apply.setApplyUserId(userId);
-		apply.setApplyUserName(user.getUserName());
-		apply.setState(0L);
-		apply.setInfoId(userId);
-		apply.setPublishId("user_add");
-		applyService.insertApply(apply);
+		userDetail.setId(user.getId());
+		userDetailService.insert(userDetail);
 
 		return Rest.ok();
 	}
