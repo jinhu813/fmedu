@@ -4,10 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.vacomall.entity.Dict;
+import com.vacomall.entity.UserDetail;
 import com.vacomall.service.DictService;
 import com.vacomall.service.DictTypeService;
+import com.vacomall.service.UserDetailService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,10 +123,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		page.setRecords(baseMapper.selectUserList(page, search));
 		return page;
 	}
-
+	@Autowired
+	private UserDetailService userDetailService;
 	@Override
 	public Page<Map<Object, Object>> selectUserPage(Page<Map<Object, Object>> page, SysUser sysUser) {
-		page.setRecords(baseMapper.selectUserList2(page,sysUser));
+		List<Map<Object, Object>> maps = baseMapper.selectUserList2(page, sysUser);
+		if(!CollectionUtils.isEmpty(maps)){
+			maps = maps.stream().map(m -> {
+				String id = (String) m.get("id");
+				UserDetail userDetail = userDetailService.selectById(id);
+				if(null != userDetail){
+					m.put("score", userDetail.getScore());
+					m.put("phone", userDetail.getPhone());
+				}
+				return m;
+			}).collect(Collectors.toList());
+		}
+		page.setRecords(maps);
 		return page;
 	}
 

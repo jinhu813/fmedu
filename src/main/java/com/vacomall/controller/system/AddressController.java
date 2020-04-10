@@ -107,7 +107,7 @@ public class AddressController extends SuperController {
         if(!CollectionUtils.isEmpty(dicts)){
             Map<String,String> map1 = new HashMap<>();
             map1.put("id","");
-            map1.put("text","--请选择--");
+            map1.put("text","");
             listMap.add(map1);
             for (Dict dict : dicts){
                 Map<String,String> map = new HashMap<>();
@@ -118,7 +118,7 @@ public class AddressController extends SuperController {
         }else{
             Map<String,String> map = new HashMap<>();
             map.put("id","");
-            map.put("text","--请选择--");
+            map.put("text","");
             listMap.add(map);
         }
     }

@@ -138,7 +138,7 @@ public class ReservedController extends SuperController {
 
         Wrapper wrapper = new EntityWrapper<Reserved>();
         wrapper.eq("for_id",userId);
-        wrapper.or().eq("CREATED_id",userId);
+//        wrapper.or().eq("CREATED_id",userId);
         wrapper.and().between("end_time", reserved.getBegin(), reserved.getEnd());
         wrapper.and().eq("state",1);
         int i = reservedService.selectCount(wrapper);

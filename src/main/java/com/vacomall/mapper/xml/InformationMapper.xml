@@ -39,6 +39,9 @@
             <if test="area != null and area !='' ">
                 AND t3.area = #{area}
             </if>
+            <if test="createdUserName != null and createdUserName !=''">
+                AND t2.CREATED_USER_NAME like CONCAT('%',#{createdUserName},'%')
+            </if>
         </where>
 
     </select>

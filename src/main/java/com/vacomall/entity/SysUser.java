@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -65,6 +66,9 @@ public class SysUser extends Model<SysUser> {
     private String area;
 
     private String address;
+
+    @TableField(exist = false)
+    private Long score;
 
     public String getId() {
         return id;
@@ -160,6 +164,14 @@ public class SysUser extends Model<SysUser> {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Long getScore() {
+        return score;
+    }
+
+    public void setScore(Long score) {
+        this.score = score;
     }
 
     @Override

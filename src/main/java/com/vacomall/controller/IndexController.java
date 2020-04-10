@@ -42,9 +42,9 @@ public class IndexController extends SuperController {
 	private UserDetailService userDetailService;
     @RequestMapping({"index/{pageNo}","index"})
     public  String index(Model model,@PathVariable(name = "pageNo",required = false) Integer pageNo,
-                         @RequestParam(defaultValue = "10") Integer pageSize,String province,String city,String area){
+                         @RequestParam(defaultValue = "10") Integer pageSize,String province,String city,String area,String userName){
         //系统登陆后的首页
-        getInfos(pageNo, pageSize, model);
+        getInfos(pageNo, pageSize, model,province,city,area,userName);
         //判断用户是否已经登陆
         boolean authenticated = SecurityUtils.getSubject().isAuthenticated();
         model.addAttribute("authenticated",authenticated);
@@ -95,7 +95,7 @@ public class IndexController extends SuperController {
         Page<Information> informationPage = informationService.getInfoApplyPage(page, information);
         model.addAttribute("pageData", informationPage);
     }
-    private void getInfos(Integer pageNo, Integer pageSize, Model model,String province,String city,String area) {
+    private void getInfos(Integer pageNo, Integer pageSize, Model model,String province,String city,String area,String userName) {
         SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
         if(null == pageNo){
             pageNo = 1;
@@ -124,6 +124,11 @@ public class IndexController extends SuperController {
         area = Optional.ofNullable(area).orElse(sysUser.getArea());
         if(StringUtils.isNotEmpty(area)){
             model.addAttribute("area",area);
+        }
+
+        if(StringUtils.isNotEmpty(userName)){
+            model.addAttribute("userName",userName);
+            information.setCreatedUserName(userName);
         }
         information.setArea(area);
         List<Dict> provinces = dictService.findByTypeCode("provinces");

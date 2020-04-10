@@ -17,11 +17,61 @@
 
   <!-- Main content -->
   <section class="content">
+
+      <div class="row">
+          <div class="col-xs-12">
+              <div class="box">
+                  <form action="/index/1" method="post" class="form-inline">
+                      <div class="box-header">
+                          <div class="input-group">
+                          </div>
+                          <div class="col-xs-2">
+                              <select name="province" id="province" class="form-control select2" id="campus">
+                                  <option value="">--请选择省--</option>
+                                  <#list provinces as dict>
+                                  <option id="${(dict.value)}" value="${(dict.value)!}" ${(province ==dict.value)?string('selected="selected"',"")}>${(dict.name)!}</option>
+                              </#list>
+                              </select>
+                          </div>
+                          <div class="col-xs-2">
+                              <select name="city" class="form-control select2" id="city" >
+                                  <option value="">--请选择市--</option>
+                                  <#if cities??>
+                                  <#list cities as dict>
+                                  <option id="${dict.value}" value="${dict.value}" ${(city ==dict.value)?string('selected="selected"',"")}>${dict.name}</option>
+                              </#list>
+                          </#if>
+                          </select>
+                      </div>
+                      <div class="col-xs-2">
+                          <select name="area" class="form-control select2" id="area" >
+                              <option value="">--请选择区县--</option>
+                              <#if areas??>
+                              <#list areas as dict>
+                              <option value="${dict.value}" ${(area ==dict.value)?string('selected="selected"',"")}>${dict.name}</option>
+                          </#list>
+                      </#if>
+                      </select>
+              </div>
+              <div class="col-xs-2">
+                  <div class="input-group">
+                      <input type="text" name="userName" value="${userName!}" class="form-control"  placeholder="输入发布人名称查询">
+                      <div class="input-group-btn">
+                          <button class="btn btn-primary" type="submit" style="margin-right: 5px"><i class="fa fa-search"></i></button>
+                          <a href="/index/1" class="btn btn-primary"><i class="fa fa-refresh"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div><!-- /.box-header -->
+          </form>
+              </div>
+          </div>
+      </div>
       <div class="what bg-li py-5" id="what">
-          <div class="container py-xl-5 py-lg-3">
-              <div class="row about-bottom-w3l text-center mt-4">
+          <!--<div class="container py-xl-5 py-lg-4" style="margin: 20px!important;">-->
+              <!--<div class="row about-bottom-w3l text-center mt-4">-->
                   <#list pageData.getRecords() as info>
-                  <div class="col-lg-4 about-grid" style="margin-top: 10px">
+                  <div class="col-lg-3 about-grid" style="margin-top: 10px">
                       <div class="about-grid-main">
                           <img src="/images/img1.png" alt="" class="img-fluid">
                           <h4 class="my-4">
@@ -40,8 +90,8 @@
                       </div>
                   </div>
               </#list>
-          </div>
-      </div>
+          <!--</div>-->
+      <!--</div>-->
 </div>
   </section><!-- /.content -->
 <div class="box-footer row">
@@ -58,12 +108,38 @@
 </@body>
 <@footer>
  <script src="/plugins/chartjs/Chart.min.js"></script>
-  <script>
- 	$(function(){
-
-
- 	});
- </script>
+<script>
+    $("#province").on('change',function(){
+        $("#city").empty();
+        $("#area").empty();
+        $("#area").select2({
+            data: {}
+        });
+        var pid = $(this).find("option:selected").attr("id");
+        if(pid) {
+            $.get('/address/city/provinceCode/'+pid, function (response) {
+                if (response.code == 200) {
+                    $("#city").select2({
+                        data: response.data
+                    });
+                }
+            });
+        }
+    });
+    $("#city").on('change',function(){
+        $("#area").empty();
+        var pid = $(this).find("option:selected").val();
+        if(pid) {
+            $.get('/address/city/area/'+pid, function (response) {
+                if (response.code == 200) {
+                    $("#area").select2({
+                        data: response.data
+                    });
+                }
+            });
+        }
+    });
+</script>
 <style>
     .content-wrapper, .right-side {
         min-height: 100%;
@@ -73,6 +149,9 @@
 
     .bg-li {
         background: #FFF;
+    }
+    .content{
+        min-height: 830px!important;
     }
 
 </style>
