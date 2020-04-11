@@ -42,6 +42,7 @@ public class UserDetailServiceImpl extends ServiceImpl<UserDetailMapper, UserDet
         //如果是学生
         if(isStudent) {
             lessonWrapper.or("STU_ID", user.getId());
+            lessonWrapper.groupBy("STU_ID");
             lessonCount = lessonService.selectCount(lessonWrapper);
         }else{
             lessonWrapper.eq("Teach_id",user.getId());
