@@ -33,7 +33,7 @@ public class Lesson extends Model<Lesson> {
     @TableField(value = "CREATED_TIME")
     private Date createdTime;
 
-    /** 课程名称 */
+    /** 名称 */
     @TableField(value = "LESSON_NAME")
     private String lessonName;
 

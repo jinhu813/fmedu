@@ -35,7 +35,7 @@ public class Grade {
     @TableField("lesson_id ")
     private String lessonId;
 
-    /** 课程名称 */
+    /** 名称 */
     @TableField("lesson_name ")
     private String lessonName;
 

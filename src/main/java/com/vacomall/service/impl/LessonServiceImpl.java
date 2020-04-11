@@ -42,7 +42,7 @@ public class LessonServiceImpl extends ServiceImpl<LessonMapper,Lesson> implemen
         SysUser currentUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
 
         Wrapper wrapper = new EntityWrapper<Lesson>();
-        //根据课程名称查询
+        //根据名称查询
         if(StringUtils.isNotEmpty(lesson.getLessonName())){
             wrapper.and().like("LESSON_NAME",lesson.getLessonName());
         }

@@ -6,6 +6,7 @@ import com.vacomall.common.controller.SuperController;
 import com.vacomall.entity.Apply;
 import com.vacomall.entity.Lesson;
 import com.vacomall.entity.SysUser;
+import com.vacomall.service.DictService;
 import com.vacomall.service.LessonService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -29,6 +30,8 @@ public class LessonController extends SuperController {
     private String prefix = "system/lesson";
     @Autowired
     private LessonService lessonService;
+    @Autowired
+    private DictService dictService;
 
     @RequiresPermissions("system:LESSON:view")
     @GetMapping()

@@ -134,7 +134,7 @@ public class InformationController extends SuperController {
         if (StringUtils.isEmpty(information.getLessonTypeId())) {
             return Rest.failure("课程信息有误");
         }
-        //获取课程名称
+        //获取名称
         List<Dict> dicts = dictService.selectList("LESSON", information.getLessonTypeId());
         if (!CollectionUtils.isEmpty(dicts)) {
             String name = dicts.get(0).getName();
