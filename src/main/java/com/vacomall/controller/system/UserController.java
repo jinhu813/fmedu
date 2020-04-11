@@ -80,6 +80,9 @@ public class UserController extends SuperController{
 	public  Rest doAdd(SysUser user,@RequestParam(value="roleId",required=false) String roleId){
 		String[] roleIds = {roleId};
 		sysUserService.insertUser(user,roleIds);
+		UserDetail userDetail = new UserDetail();
+		userDetail.setId(user.getId());
+		userDetailService.insert(userDetail);
 		return Rest.ok();
 	}
 	/**

@@ -38,6 +38,7 @@
                 <th>用户名</th>
                 <th>描述</th>
                 <th>创建时间</th>
+                <th>地址</th>
                 <th>状态</th>
                 <th width="120px">操作</th>
               </tr>
@@ -52,6 +53,7 @@
 	                <td>${(user.userName)!}</td>
 	                <td>${(user.userDesc)!'--'}</td>
 	                <td>${(user.createTime?string('yyyy/MM/dd HH:mm:ss'))!}</td>
+					  <td>${(user.address)!'未录入'}</td>
 	                <td><#if user.userState==1>启用<#else><font color="red">禁用</font></#if></td>
 	                <td>
 	                	<@shiro.hasPermission name="editUser">
