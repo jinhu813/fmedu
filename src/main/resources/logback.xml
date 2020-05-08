@@ -47,8 +47,8 @@
 	
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
-		<!-- <appender-ref ref="INFO" /> -->
-		<!-- <appender-ref ref="SQL" /> -->
+		 <appender-ref ref="INFO" />
+		 <appender-ref ref="SQL" />
 	</root>
 	
 </configuration>  
